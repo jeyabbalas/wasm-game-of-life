@@ -26,20 +26,17 @@ This repository follows the tutorial from [Rust Wasm book's](https://rustwasm.gi
 4. The dependency file `www/package.json` was customized to the current project.
 
 ```json
-// www/package.json
 {
-  // ...
   "author": "Jeya Balaji Balasubramanian <jeyabbalas@gmail.com>",
   "dependencies": {
     "wasm-game-of-life": "file:../pkg"
   },
   "devDependencies": {
-    //...
   }
 }
 ```
 
-5. The `www/index.js` file was also customized to import the package in `pkg/`.
+1. The `www/index.js` file was also customized to import the package in `pkg/`.
 
 ```js
 import * as wasm from "wasm-game-of-life";
