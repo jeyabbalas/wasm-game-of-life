@@ -1,9 +1,9 @@
 # Conway's Game of Life in Wasm
 
-This repository follows the tutorial from [Rust Wasm book's](https://rustwasm.github.io/docs/book/) that introduces Wasm via Rust.
+This repository follows the tutorial from [Rust Wasm book](https://rustwasm.github.io/docs/book/), which introduces Wasm via Rust.
 
 
-## Initial Setup
+## Steps Followed
 
 1. The initial project setup was done by cloning the [wasm-pack project template](https://github.com/rustwasm/rust-webpack-template) and specifying the project name using the following command—
 
@@ -36,7 +36,7 @@ This repository follows the tutorial from [Rust Wasm book's](https://rustwasm.gi
 }
 ```
 
-1. The `www/index.js` file was also customized to import the package in `pkg/`.
+5. The `www/index.js` file was also customized to import the package in `pkg/`.
 
 ```js
 import * as wasm from "wasm-game-of-life";
@@ -50,7 +50,7 @@ wasm.greet();
 > npm install
 ```
 
-7. A server is run to serve the webpage within `/www/`.
+1. A server is run to serve the webpage within `www/`.
 
 ```sh
 > npm run start
