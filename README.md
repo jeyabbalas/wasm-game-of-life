@@ -3,7 +3,7 @@
 This repository follows the tutorial from [Rust Wasm book](https://rustwasm.github.io/docs/book/), which introduces Wasm via Rust.
 
 
-## Steps Followed
+## Steps
 
 1. The initial project setup was done by cloning the [wasm-pack project template](https://github.com/rustwasm/rust-webpack-template) and specifying the project name using the following command—
 
@@ -59,3 +59,6 @@ wasm.greet();
 This generated the `www/index.html` content at http://localhost:8080/.
 
 After making updates to the Rust code, simply re-run `> wasm-pack build` to automatically reflect changes in the served page.
+
+
+![The rendered webpage](demo.png)
