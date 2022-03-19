@@ -1,4 +1,4 @@
-import { Universe, Cell } from "wasm-game-of-life";
+import { Universe } from "wasm-game-of-life";
 import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
 
 const CELL_SIZE = 5;
@@ -6,10 +6,10 @@ const GRID_COLOR = "#CCCCCC";
 const DEAD_COLOR = "#FFFFFF";
 const ALIVE_COLOR = "#000000";
 
-//const universe = Universe.new();
+const universe = Universe.new();
 //const universe = Universe.random();
 //const universe = Universe.glider();
-const universe = Universe.middleweight_spaceship();
+//const universe = Universe.middleweight_spaceship();
 
 const width = universe.width();
 const height = universe.height();
@@ -52,16 +52,22 @@ const getIndex = (row, column) => {
     return row*width + column;
 };
 
+const bitIsSet = (n, arr) => {
+    const byte = Math.floor(n / 8); // bit index in byte array
+    const mask = 1 << (n % 8); // all zeros except one at the index of interest
+    return (arr[byte] & mask) === mask; // did that index have true?
+};
+
 const drawCells = () => {
     // direct WASM linear memory access!
     const cellsPtr = universe.cells();
-    const cells = new Uint8Array(memory.buffer, cellsPtr, width*height);
+    const cells = new Uint8Array(memory.buffer, cellsPtr, (width*height)/8);
 
     ctx.beginPath();
     for(let row=0; row<height; row++) {
         for(let col=0; col<width; col++) {
             const idx = getIndex(row, col);
-            ctx.fillStyle = cells[idx] === Cell.Dead? DEAD_COLOR : ALIVE_COLOR;
+            ctx.fillStyle = bitIsSet(idx, cells) ? ALIVE_COLOR : DEAD_COLOR;
             ctx.fillRect(col*(CELL_SIZE+1)+1, row*(CELL_SIZE+1)+1, CELL_SIZE, CELL_SIZE);
         }
     }
