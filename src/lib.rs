@@ -1,5 +1,6 @@
 mod utils;
 
+use js_sys;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -100,12 +101,87 @@ impl Universe { // constructor
     pub fn new() -> Universe {
         let width = 64;
         let height = 64;
+
         // initial state
         let cells = (0..width*height).map(|i| {
             if i%2 == 0 || i%7 == 0 {
                 Cell::Alive
             } else {
                 Cell::Dead
+            }
+        }).collect();
+
+        Universe { 
+            width, 
+            height, 
+            cells, 
+        }
+    }
+
+    pub fn random() -> Universe {
+        let width = 64;
+        let height = 64;
+
+        // initial state
+        let cells = (0..width*height).map(|_| {
+            if js_sys::Math::random() < 0.5 {
+                Cell::Alive
+            } else {
+                Cell::Dead
+            }
+        }).collect();
+
+        Universe { 
+            width, 
+            height, 
+            cells, 
+        }
+    }
+
+    pub fn glider() -> Universe {
+        let width = 64;
+        let height = 64;
+
+        // initial state
+        let glider_idx = (js_sys::Math::random() * ((width*height) as f64)).floor() as u32;
+        let cells = (0..width*height).map(|i| {
+            match i {
+                x if x == ((glider_idx+1) % (width*height)) => Cell::Alive, 
+                x if x == (((glider_idx+2) + width) % (width*height)) => Cell::Alive, 
+                x if x == (((glider_idx+0) + 2*width) % (width*height)) => Cell::Alive, 
+                x if x == (((glider_idx+1) + 2*width) % (width*height)) => Cell::Alive, 
+                x if x == (((glider_idx+2) + 2*width) % (width*height)) => Cell::Alive, 
+                _ => Cell::Dead,
+            }
+        }).collect();
+
+        Universe { 
+            width, 
+            height, 
+            cells, 
+        }
+    }
+
+    pub fn middleweight_spaceship() -> Universe {
+        let width = 64;
+        let height = 64;
+
+        // initial state
+        let glider_idx = (js_sys::Math::random() * ((width*height) as f64)).floor() as u32;
+        let cells = (0..width*height).map(|i| {
+            match i {
+                x if x == ((glider_idx+1) % (width*height)) => Cell::Alive, 
+                x if x == ((glider_idx+2) % (width*height)) => Cell::Alive, 
+                x if x == ((glider_idx+3) % (width*height)) => Cell::Alive, 
+                x if x == ((glider_idx+4) % (width*height)) => Cell::Alive, 
+                x if x == ((glider_idx+5) % (width*height)) => Cell::Alive, 
+                x if x == (((glider_idx) + width) % (width*height)) => Cell::Alive, 
+                x if x == (((glider_idx+5) + width) % (width*height)) => Cell::Alive, 
+                x if x == (((glider_idx+5) + 2*width) % (width*height)) => Cell::Alive, 
+                x if x == (((glider_idx) + 3*width) % (width*height)) => Cell::Alive, 
+                x if x == (((glider_idx+4) + 3*width) % (width*height)) => Cell::Alive, 
+                x if x == (((glider_idx+2) + 4*width) % (width*height)) => Cell::Alive, 
+                _ => Cell::Dead,
             }
         }).collect();
 
