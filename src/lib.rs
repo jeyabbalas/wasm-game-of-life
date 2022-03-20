@@ -3,12 +3,21 @@ mod utils;
 use fixedbitset::FixedBitSet;
 use js_sys;
 use wasm_bindgen::prelude::*;
+use web_sys;
+
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+
+
+macro_rules! log {
+    ( $( $t:tt )* ) => {
+        web_sys::console::log_1(&format!( $( $t )* ).into());
+    };
+}
 
 
 #[wasm_bindgen]
@@ -58,13 +67,21 @@ impl Universe {
                 let cell = self.cells[idx];
                 let live_neighbors = self.live_neighbor_count(row, column);
 
-                next.set(idx, match (cell, live_neighbors) {
+                let next_cell = match (cell, live_neighbors) {
                     (true, x) if x < 2 => false, 
                     (true, 2) | (true, 3) => true, 
                     (true, x) if x > 3 => false, 
                     (false, 3) => true, 
                     (same_state, _) => same_state,
-                });
+                };
+
+                if cell != next_cell {
+                    let was_state = if cell {"alive"} else {"dead"};
+                    let is_state = if next_cell {"alive"} else {"dead"};
+                    log!("Cell[{row},{column}]: with {live_neighbors} neighbors transitioned state {was_state} -> {is_state}");
+                }
+
+                next.set(idx, next_cell);
             }
         }
 
@@ -76,6 +93,8 @@ impl Universe {
 #[wasm_bindgen]
 impl Universe { // constructor
     pub fn new() -> Universe {
+        utils::set_panic_hook();
+
         let width = 64;
         let height = 64;
         let size = (width*height) as usize;
