@@ -50,7 +50,7 @@ wasm.greet();
 > npm install
 ```
 
-1. A server is run to serve the webpage within `www/`.
+7. A server is run to serve the webpage within `www/`.
 
 ```sh
 > npm run start
@@ -60,5 +60,6 @@ This generated the `www/index.html` content at http://localhost:8080/.
 
 After making updates to the Rust code, simply re-run `> wasm-pack build` to automatically reflect changes in the served page.
 
+8. Implement Conway's Game of Life i.e., draw the rest of the horse.
 
 ![The rendered webpage](demo.png)
