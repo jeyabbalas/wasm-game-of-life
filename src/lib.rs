@@ -75,11 +75,11 @@ impl Universe {
                     (same_state, _) => same_state,
                 };
 
-                if cell != next_cell {
-                    let was_state = if cell {"alive"} else {"dead"};
-                    let is_state = if next_cell {"alive"} else {"dead"};
-                    log!("Cell[{row},{column}]: with {live_neighbors} neighbors transitioned state {was_state} -> {is_state}");
-                }
+                // if cell != next_cell {
+                //     let was_state = if cell {"alive"} else {"dead"};
+                //     let is_state = if next_cell {"alive"} else {"dead"};
+                //     log!("Cell[{row},{column}]: with {live_neighbors} neighbors transitioned state {was_state} -> {is_state}.");
+                // }
 
                 next.set(idx, next_cell);
             }
