@@ -20,16 +20,60 @@ canvas.height = (CELL_SIZE + 1) * height + 1;
 
 const ctx = canvas.getContext("2d");
 
+let steps = document.getElementById("steps");
+
 let animationId = null;
 const playPauseButton = document.getElementById("play-pause");
 
+const fps = new class {
+    constructor() {
+        this.fps = document.getElementById("fps");
+        this.frames = [];
+        this.lastFrameTimeStamp = performance.now();
+    }
+
+    render() {
+        const now = performance.now();
+        const delta = now - this.lastFrameTimeStamp;
+        const fps = (1/delta) * 1000; // fps = fpms * millisecs in a second
+
+        this.frames.push(fps);
+        if(this.frames.length > 100) { // 100 capacity
+            this.frames.shift();
+        }
+
+        // statistics
+        let max = -Infinity;
+        let min = Infinity;
+        let sum = 0;
+        for(let i=0; i<this.frames.length; i++) {
+            sum += this.frames[i];
+            max = Math.max(this.frames[i], max);
+            min = Math.min(this.frames[i], min);
+        }
+        let mean = sum / this.frames.length;
+
+        this.fps.textContent = `
+        Frames per second: 
+                               latest: ${Math.round(fps)}
+        Avg. over last 100 iterations: ${Math.round(mean)}
+         Min over last 100 iterations: ${Math.round(min)}
+         Max over last 100 iterations: ${Math.round(max)}
+        `.trim();
+        this.lastFrameTimeStamp = performance.now();
+    }
+};
+
 const renderLoop = () => {
     //debugger;
+    fps.render();
 
     drawGrid();
     drawCells();
 
-    universe.tick();
+    for(let i=0; i<steps.value; i++) {
+        universe.tick();
+    }
 
     animationId = requestAnimationFrame(renderLoop);
 };
