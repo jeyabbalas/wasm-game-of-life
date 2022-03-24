@@ -5,7 +5,7 @@
     <title>Conway's Game of Life</title>
     <style>
       body {
-        position: absolute;
+        position: relative;
         top: 0;
         left: 0;
         width: 100%;
@@ -15,6 +15,12 @@
         align-items: center;
         justify-content: center;
       }
+      label {
+        font-family: monospace;
+      }
+      output {
+        font-family: monospace;
+      }
       #fps {
         white-space: pre;
         font-family: monospace;
@@ -22,18 +28,19 @@
     </style>
   </head>
   <body>
-    <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
+    <h1>Conway's Game of Life</h1>
     <div id="fps"></div>
-    <div>
-      <label for="steps">Steps: </label>
-      <input type="range" id="steps" name="steps" min="1" max="10" value="1" oninput="this.nextElementSibling.value = this.value">
-      <output>1</output>
-    </div>
-    <div>
-      <label for="play-pause">Pause/play: </label>
-      <button id="play-pause"></button>
-    </div>
+    
+    <label for="steps">Steps: </label>
+    <input type="range" id="steps" name="steps" min="1" max="10" value="1" oninput="this.nextElementSibling.value = this.value">
+    <output>1</output>
+    
+    <label for="play-pause">Pause/play: </label>
+    <button id="play-pause"></button>
+    
     <canvas id="game-of-life-canvas"></canvas>
+    
     <script src="./bootstrap.js"></script>
+    
   </body>
 </html>
